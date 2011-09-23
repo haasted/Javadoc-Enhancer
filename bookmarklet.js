@@ -30,7 +30,6 @@
 	// Load the two dependencies in sequence
     getScript('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
     function() {
-//		getScript('file:///Users/henrik/Documents/programming/JavadocEnhance/javadocbookmarklet.js', function() {});
-		getScript('http://aasted.org/jdocenhance.js', function() {});
+		getScript('https://raw.github.com/haasted/Javadoc-Enhancer/master/jdocenhance.js', function() {});
     });
 })();
