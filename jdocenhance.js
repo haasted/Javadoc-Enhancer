@@ -1,31 +1,5 @@
 // TODO Easy navigation to selected class.
 //  - Maintain presence on page if a new package is selected.
-//  - Explore whether String.prototype.localeCompare is more appropriate for string comparison.
-
-/*
- Search logic :
-  - All lowercase - Prefix-search
-  - Contains capitals : camel-case search
-  	: Split into "camel-case" fragments, e.g. StrBu turns into [Str, Bu]
-  	  - Binary search first fragment
-  	  - Brute-search second fragment in the remaining list.
-  - Inital wild-card : "old style" regexp search
-
-	Split everything into fragments?
-	 - Initial search binary, following searches brute-force.
-	   - Exception : "Initial wildcard"-searches : all brute-force, e.g. "*buf"
-
-	Examples :
-	 "StrBuf" : [Str, Buf]
-	 "Str*Buf" : [Str, *, Buf]
-	 'strbuf' : [strbuf]
-	 "SB" : [S, B]
-
-	// Fragment reg exp?
-	([A-Z]{1}[a-z]*|\*|[a-z]+)
-*/
-
-console.log("Loaded!");
 
 (function() {
     var timerObj,
@@ -46,15 +20,15 @@ console.log("Loaded!");
 	$('html > head', packageFrame).append('<style>.filtered { display: none; }</style>');
 	$('html > head', packageFrame).append('<style>.selected { background-color : lightgray; }</style>');
 
-	// $("#classSearch", packageFrame).keyup(function(event) {
-	// 	if (event.keyCode == 13 ) { // Enter
-	// 		goToSelected();
-	// 	} else if (event.keyCode == 40) { // Down
-	// 		moveMarker(1);
-	// 	} else if (event.keyCode == 38) { // Up
-	// 		moveMarker(-1);
-	// 	}
-	// });
+	$("#classSearch", packageFrame).keyup(function(event) {
+		if (event.keyCode == 13 ) { // Enter
+			goToSelected();
+		} else if (event.keyCode == 40) { // Down
+			moveMarker(1);
+		} else if (event.keyCode == 38) { // Up
+			moveMarker(-1);
+		}
+	});
 
 	//  Decide how the Javadoc is structured. Some versions are lists, while others are one massive sequence of anchor tags followed by breaks.
 	if ( $("li", packageFrame).length > 1000 ) {
@@ -81,6 +55,8 @@ console.log("Loaded!");
         	return
         };
 
+        previousSearch = search;
+
         // The first fragment of the search string decides the search strategy.
         var firstFragment = search.match(/([A-Z]{1}[a-z]*|\*|[a-z]+)/);
 
@@ -105,63 +81,20 @@ console.log("Loaded!");
         	return;
         }
 
-        // Camelcase search. Start binary, filter the remaining brute-force.
+        // CamelCase search. Start binary, filter the remaining brute-force.
         binarySearch(firstFragment);
         var regexp = getRegExp(search);
         bruteSearch($(selector + ":not(.filtered)", packageFrame), regexp);
-
-        return;
-
-
-        // Build regexp:
-        console.time("BruteSearch");
-        var regexp = getRegExp(search);
-        bruteSearch($(selector + ":not(.filtered)", packageFrame), regexp);
-        console.timeEnd("BruteSearch");
-
-		// console.time("Find non-filtered (SingleQuery)");
-  //       var s = $(selector + ":not(.filtered)", packageFrame);
-  //       console.log("Size " + s.size());
-
-  //       console.timeEnd("Find non-filtered (SingleQuery)");
-
-
-  //       console.time("Find non-filtered (chained)");
-
-  //       s = $(selector, packageFrame).not(".filtered");
-  //       console.log("Size " + s.size());
-
-  //       console.timeEnd("Find non-filtered (chained)");
-
-
-  //       var regexp = getRegExp(search);
-		// clearSelection();
-
-    //     if (search.indexOf(previousSearch) == 0) {
-    //         $(selector + ":not(.filtered)", packageFrame)
-    //         .filter(function(index, el) {
-    //             return $(el).text().match(regexp) == null;
-    //         }).addClass("filtered");
-    //     } else if (previousSearch != undefined && previousSearch.indexOf(search) == 0) {
-    //         $(selector + ".filtered", packageFrame)
-    //         .filter(function(index, el) {
-    //             return $(el).text().match(regexp) != null;
-    //         }).removeClass("filtered");
-    //     } else {
-    //         $(selector, packageFrame)
-    //         .each(function(index, element) {
-				// element = $(element);
-				// element.toggleClass("filtered", element.text().match(regexp) == null );
-    //         });
-    //     }
-
-        previousSearch = search;
     };
 
     function binarySearch(prefix) {
-    	console.time("BinarySearch");
         var start = binarySearchTop(prefix, $(selector, packageFrame));
         var end = binarySearchBottom(prefix, $(selector, packageFrame));
+
+        if (start == -1 || end == -1) {
+    		$(selector, packageFrame).addClass("filtered");
+        	return;
+        }
 
         // TODO Measure potential improvement of including index inside selector string.
         var startEl = $(selector, packageFrame).eq(start);
@@ -171,16 +104,13 @@ console.log("Loaded!");
         endEl.nextAll().addClass("filtered");
 
         $(selector, packageFrame).slice(start, end).removeClass("filtered");
-        console.timeEnd("BinarySearch");
     }
 
     function bruteSearch(elements, regexp) {
-    	console.time("BruteSearch");
     	elements.each(function(idx, el) {
     		el = $(el);
     		el.toggleClass("filtered", el.text().match(regexp) === null);
     	});
-    	console.timeEnd("BruteSearch");
     }
 
 	function getRegExp(search) { // I do not want to know the cyclomatic complexity of this one ...
