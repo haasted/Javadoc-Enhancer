@@ -15,8 +15,6 @@
 	}
 	searchFieldAnchor.prepend('<input type="text" id="classSearch" style="margin-bottom: 10px" /><br/>');
 
-
-
 	$('html > head', packageFrame).append('<style>.filtered { display: none; }</style>');
 	$('html > head', packageFrame).append('<style>.selected { background-color : lightgray; }</style>');
 
@@ -29,6 +27,10 @@
 			moveMarker(-1);
 		}
 	});
+
+	// Re-organize the list to use <div> elements rather than <li>. Google Chrome hangs when it has to work
+	// on lists, while it can hide and show divs like nobody's business.
+
 
 	//  Decide how the Javadoc is structured. Some versions are lists, while others are one massive sequence of anchor tags followed by breaks.
 	if ( $("li", packageFrame).length > 1000 ) {
@@ -97,19 +99,30 @@
         }
 
         // TODO Measure potential improvement of including index inside selector string.
+        // TODO 2 Investigate surrounding the groups with a hidden span, rather than hiding each list element.
+        // - Update : far slower, but works in Chrome.
+        console.log(start, end);
+        console.log("Hiding initial block");
+        console.time("Hiding elements");
         var startEl = $(selector, packageFrame).eq(start);
-        startEl.prevAll().addClass("filtered");
-
         var endEl = $(selector, packageFrame).eq(end);
-        endEl.nextAll().addClass("filtered");
 
-        $(selector, packageFrame).slice(start, end).removeClass("filtered");
+        // startEl.prevAll().wrapAll("<span class='filtered' />");
+        startEl.prevAll().hide();
+        console.log("Initial block hidden");
+
+        endEl.nextAll().addClass("filtered");
+        // endEl.nextAll().wrapAll("<span class='filtered' />");
+
+        // $(selector, packageFrame).slice(start, end).removeClass("filtered");
+        console.timeEnd("Hiding elements");
     }
 
     function bruteSearch(elements, regexp) {
+    	console.log("BruteSearching using " + regexp.toString());
     	elements.each(function(idx, el) {
     		el = $(el);
-    		el.toggleClass("filtered", el.text().match(regexp) === null);
+    		// el.toggleClass("filtered", el.text().match(regexp) === null);
     	});
     }
 
