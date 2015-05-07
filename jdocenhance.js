@@ -228,7 +228,6 @@
 		if (el.length == 0)
 			return;
 
-		// el.css("background-color", "lightgray");
 		el.addClass("selected");
 
 		$("a:visible", packageFrame).eq(index).removeClass("selected");
