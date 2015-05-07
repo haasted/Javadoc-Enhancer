@@ -3,7 +3,6 @@
 
 (function() {
     var timerObj,
-		previousSearch, // The search term the last time doSearch() was invoked.
 		selector, // The selector used to identify each class entry. Varies between javadoc versions.
      	packageFrame = top.frames["packageFrame"].document,
      	classFrame = top.frames["classFrame"].document;
@@ -28,10 +27,6 @@
 		}
 	});
 
-	// Re-organize the list to use <div> elements rather than <li>. Google Chrome hangs when it has to work
-	// on lists, while it can hide and show divs like nobody's business.
-
-
 	//  Decide how the Javadoc is structured. Some versions are lists, while others are one massive sequence of anchor tags followed by breaks.
 	if ( $("li", packageFrame).length > 1000 ) {
 		selector = "li";
@@ -53,11 +48,9 @@
     	clearTimeout(timerObj);
 
         var search = $("#classSearch", packageFrame).val();
-        if (search === previousSearch) {
-        	return
-        };
 
-        previousSearch = search;
+        // Clear the entire search. TODO This could perhaps be done smarter by checking whether this search is a subset of the previous.
+        $(selector, packageFrame).removeClass("filtered");
 
         // The first fragment of the search string decides the search strategy.
         var firstFragment = search.match(/([A-Z]{1}[a-z]*|\*|[a-z]+)/);
@@ -85,6 +78,7 @@
 
         // CamelCase search. Start binary, filter the remaining brute-force.
         binarySearch(firstFragment);
+
         var regexp = getRegExp(search);
         bruteSearch($(selector + ":not(.filtered)", packageFrame), regexp);
     };
@@ -99,30 +93,20 @@
         }
 
         // TODO Measure potential improvement of including index inside selector string.
+
         // TODO 2 Investigate surrounding the groups with a hidden span, rather than hiding each list element.
         // - Update : far slower, but works in Chrome.
-        console.log(start, end);
-        console.log("Hiding initial block");
-        console.time("Hiding elements");
         var startEl = $(selector, packageFrame).eq(start);
+        startEl.prevAll().addClass("filtered");
+
         var endEl = $(selector, packageFrame).eq(end);
-
-        // startEl.prevAll().wrapAll("<span class='filtered' />");
-        startEl.prevAll().hide();
-        console.log("Initial block hidden");
-
         endEl.nextAll().addClass("filtered");
-        // endEl.nextAll().wrapAll("<span class='filtered' />");
-
-        // $(selector, packageFrame).slice(start, end).removeClass("filtered");
-        console.timeEnd("Hiding elements");
     }
 
     function bruteSearch(elements, regexp) {
-    	console.log("BruteSearching using " + regexp.toString());
     	elements.each(function(idx, el) {
     		el = $(el);
-    		// el.toggleClass("filtered", el.text().match(regexp) === null);
+    		el.toggleClass("filtered", el.text().match(regexp) === null);
     	});
     }
 
@@ -130,7 +114,7 @@
 		var result = "",
 			camelCase = false;
 
-		$.each(search, function(index, c) {
+		$.each(search.split(''), function(index, c) {
 			if (!isNaN(c)) { // Handle numbers. They don't work well with the isUpperCase-check, so get them out of the way.
 				result += c;
 			} else if (c == '*') {
@@ -144,7 +128,7 @@
 				if (index == 0) {
 					result += "^" + c;
 				} else {
-					result += "[a-z0-9]*" + c;
+					result += "[a-z0-9]+" + c;
 				}
 			} else {
 				result += c;
