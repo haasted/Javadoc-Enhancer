@@ -1,35 +1,13 @@
-// Stolen outright from the jQuerify bookmarklet 
+javascript: (function() {
+    getScript('//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', function() {
+        getScript('//localhost:8080/jdocenhance.js')
+    });
 
-(function() {
-    if (typeof jQuery != 'undefined') {
-//        msg = 'This page already using jQuery v' + jQuery.fn.jquery;
-
-    } else if (typeof $ == 'function') {
-        otherlib = true;
-    }
-
-    // more or less stolen form jquery core and adapted by paul irish
     function getScript(url, success) {
         var script = document.createElement('script');
         script.src = url;
-        var head = document.getElementsByTagName('head')[0],
-        done = false;
-        // Attach handlers for all browsers
-        script.onload = script.onreadystatechange = function() {
-            if (!done && (!this.readyState
-            || this.readyState == 'loaded'
-            || this.readyState == 'complete')) {
-                done = true;
-                success();
-                script.onload = script.onreadystatechange = null;
-                head.removeChild(script);
-            }
-        };
-        head.appendChild(script);
+        script.onload = success;
+
+        document.getElementsByTagName('head')[0].appendChild(script)
     }
-	// Load the two dependencies in sequence
-    getScript('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
-    function() {
-		getScript('https://raw.github.com/haasted/Javadoc-Enhancer/master/jdocenhance.js', function() {});
-    });
-})();
+})()
