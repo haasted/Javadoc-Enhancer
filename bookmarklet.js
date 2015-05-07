@@ -1,6 +1,6 @@
 javascript: (function() {
     getScript('//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', function() {
-        getScript('//localhost:8080/jdocenhance.js')
+        getScript('//raw.github.com/haasted/Javadoc-Enhancer/master/jdocenhance.js')
     });
 
     function getScript(url, success) {
