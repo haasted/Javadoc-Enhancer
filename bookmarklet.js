@@ -1,6 +1,6 @@
 javascript: (function() {
     getScript('//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', function() {
-        getScript('//raw.github.com/haasted/Javadoc-Enhancer/master/jdocenhance.js')
+        getScript('//cdn.rawgit.com/haasted/Javadoc-Enhancer/42dae9f93195561629ece3ab5ff5857802d48ae0/jdocenhance.min.js')
     });
 
     function getScript(url, success) {
