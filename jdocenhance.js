@@ -28,7 +28,8 @@
 	});
 
 	//  Decide how the Javadoc is structured. Some versions are lists, while others are one massive sequence of anchor tags followed by breaks.
-	if ( $("li", packageFrame).length > 1000 ) {
+	// TODO Improve this detection. Include links to examples of the different structures in comments.
+	if ( $("li", packageFrame).length > 10 ) {
 		selector = "li";
 	} else {
 		// Assuming it's the "<a ... </a><br/> version.
