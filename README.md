@@ -1,0 +1,24 @@
+# Javadoc-Enhancer
+Javadoc-Enhander adds a convenient search-field to the class list of Javadoc page.
+
+Go to the [demo page](http://google.com) to see it in action.
+
+
+<img align="right" src="images/example1.gif">
+
+# Installation
+
+The search-field is inserted using a bookmarklet. Github doesn't allow javascript-links, so installation is done in one of the following ways:
+* Go to the [demo page](http://google.com) and bookmark the link given in the ´*Installation* section.
+* Copy the following url into an existing bookmark
+
+
+    `javascript:(function(){function a(a,e){var n=document.createElement("script");n.src=a,n.onload=e,document.getElementsByTagName("head")[0].appendChild(n)}a("//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",function(){a("//cdn.rawgit.com/haasted/Javadoc-Enhancer/e9a0e7f8f165b2f26c4dddb6efa3d1849c666ba8/jdocenhance.min.js")})})()`
+
+# Behind the scenes
+
+The bookmarklet works by loading the script `jdocenhance.min.js` through the [rawgit.com](http://rawgit.com/) CDN.
+
+# Future work
+
+* Automatically re-insert the script if the "All classes" frame changes.
