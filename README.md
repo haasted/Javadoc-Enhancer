@@ -1,21 +1,21 @@
 # Javadoc-Enhancer
-Javadoc-Enhander adds a convenient search-field to the class list of Javadoc page. The search field mimics the camel-case notation known from tools such as Intellij Idea and Eclipse, and allows the use of wildcards.
+Javadoc-Enhander adds a powerful search-field to the class list of Javadoc page. The search field allows the use of wildcards and mimics the camel-case notation used for navigating classes in tools such as IntelliJ IDEA and Eclipse.
 
-Go to the [demo page](http://bitcraft.dk/Javadoc-Enhancer/ "demopage") to see it in action.
+Go to the [demo page](http://bitcraft.dk/Javadoc-Enhancer/ "demopage") to see it in action and play around.
 
 <img align="right" src="images/example1.gif">
 
 # Installation
 
 The search-field is inserted using a bookmarklet. Github doesn't allow javascript-links, so installation is done in one of the following ways:
-* Go to the [demo page](http://bitcraft.dk/Javadoc-Enhancer/) and bookmark the link given in the ´*Installation* section.
+* Go to the [demo page](http://bitcraft.dk/Javadoc-Enhancer/) and bookmark the link given in the ´*Installation*´ section.
 * Copy the following url into an existing bookmark
 
     `javascript:(function(){function a(a,e){var n=document.createElement("script");n.src=a,n.onload=e,document.getElementsByTagName("head")[0].appendChild(n)}a("//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",function(){a("//cdn.rawgit.com/haasted/Javadoc-Enhancer/e9a0e7f8f165b2f26c4dddb6efa3d1849c666ba8/jdocenhance.min.js")})})()`
 
 # Behind the scenes
 
-The bookmarklet works by loading the script `jdocenhance.min.js` through the [rawgit.com](http://rawgit.com/) CDN.
+The bookmarklet works by loading the script `jdocenhance.min.js` through the [rawgit.com](http://rawgit.com/) CDN. Only the bookmarklet needs to be installed.
 
 # Future work
 
