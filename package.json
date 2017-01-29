@@ -1,0 +1,30 @@
+{
+  "name": "javadoc-enhancer",
+  "version": "1.0.0",
+  "description": "Javadoc-Enhander adds a powerful search-field to the class list of Javadoc page. The search field allows the use of wildcards and mimics the camel-case notation used for navigating classes in tools such as IntelliJ IDEA and Eclipse.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haasted/Javadoc-Enhancer.git"
+  },
+  "keywords": [
+    "java",
+    "javadoc",
+    "bookmarklet"
+  ],
+  "author": "Henrik Aasted Sørensen <henrik@aasted.dk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haasted/Javadoc-Enhancer/issues"
+  },
+  "homepage": "https://github.com/haasted/Javadoc-Enhancer#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-minify": "0.0.14",
+    "gulp-strip-debug" : "1.1.0"
+  }
+}
