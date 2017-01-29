@@ -1,6 +1,8 @@
 // TODO Easy navigation to selected class.
 //  - Maintain presence on page if a new package is selected.
 
+console.log("jdocenhance.js loaded");
+
 (function() {
     var timerObj,
 		selector, // The selector used to identify each class entry. Varies between javadoc versions.
@@ -42,6 +44,7 @@
 
     $("#classSearch", packageFrame).keyup(function(event) {
         clearTimeout(timerObj);
+        console.log("Postponing search due to user input.");
         timerObj = setTimeout(doSearch, 250);
     });
 
@@ -57,6 +60,7 @@
         var firstFragment = search.match(/([A-Z]{1}[a-z]*|\*|[a-z]+)/);
 
         if (firstFragment === null || search.trim() === '*') {
+        	console.log("Clearing search.");
         	$(selector, packageFrame).removeClass("filtered");
         	return;
         }
@@ -65,6 +69,7 @@
 
         // Various search strategies, depending on the search term used
         if (firstFragment === '*') {
+			console.log("Wildcard found. Using brute for search.");
         	// Initial wild-card. Do a complete brute-force search.
         	var regexp = getRegExp(search);
         	bruteSearch($(selector, packageFrame), regexp);
@@ -78,16 +83,21 @@
         }
 
         // CamelCase search. Start binary, filter the remaining brute-force.
+        console.log("Performing camel case binary search.");
         binarySearch(firstFragment);
 
         var regexp = getRegExp(search);
+        console.log("Regexp for remaining search ", regexp);
         bruteSearch($(selector + ":not(.filtered)", packageFrame), regexp);
     };
 
     function binarySearch(prefix) {
+    	console.log("Binary search with regexp", prefix);
         var start = binarySearchTop(prefix, $(selector, packageFrame));
         var end = binarySearchBottom(prefix, $(selector, packageFrame));
 
+    	console.log("Binary search start index ", start);
+    	console.log("Binary search end index ", end);
         if (start == -1 || end == -1) {
     		$(selector, packageFrame).addClass("filtered");
         	return;
@@ -129,7 +139,7 @@
 				if (index == 0) {
 					result += "^" + c;
 				} else {
-					result += "[a-z0-9]+" + c;
+					result += "[a-z0-9]*" + c;
 				}
 			} else {
 				result += c;
