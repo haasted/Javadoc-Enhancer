@@ -11,7 +11,7 @@ The search-field is inserted using a bookmarklet. Github doesn't allow javascrip
 * Go to the [demo page](http://bitcraft.dk/Javadoc-Enhancer/) and bookmark the link given in the ´*Installation*´ section.
 * Copy the following url into an existing bookmark
 
-    `javascript:(function(){function a(a,e){var n=document.createElement("script");n.src=a,n.onload=e,document.getElementsByTagName("head")[0].appendChild(n)}a("//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",function(){a("//cdn.rawgit.com/haasted/Javadoc-Enhancer/e9a0e7f8f165b2f26c4dddb6efa3d1849c666ba8/jdocenhance.min.js")})})()`
+    `javascript:(function(){function a(a,e){var n=document.createElement("script");n.src=a,n.onload=e,document.getElementsByTagName("head")[0].appendChild(n)}a("//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",function(){a("//cdn.rawgit.com/haasted/Javadoc-Enhancer/r1.1.0/dist/jdocenhance-min.js")})})()`
 
 # Behind the scenes
 
